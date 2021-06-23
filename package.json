@@ -39,6 +39,7 @@
         ]
     },
     "devDependencies": {
-        "eslint-plugin-jest": "^24.3.6"
+        "eslint-plugin-jest": "^24.3.6",
+        "gh-pages": "^3.2.3"
     }
 }
