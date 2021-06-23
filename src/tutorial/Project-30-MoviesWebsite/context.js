@@ -73,10 +73,9 @@ const AppProvider = ({
         isLoading(true);
         const response = await fetch(url);
         const newMovies = await response.json();
-        console.log(newMovies)
         if (newMovies.data.movies) {
             setMovies(newMovies.data.movies);
-            console.log(movies);
+         
             isLoading(false);
         }
         
