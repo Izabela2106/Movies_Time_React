@@ -97,7 +97,7 @@ const AppProvider = ({
 
     useEffect(() => {
         setUrl(`https://yts.mx/api/v2/list_movies.json?limit=50&query_term=${searchQuery}`)
-        console.log(url)
+       
     }, [searchQuery])
 
 
