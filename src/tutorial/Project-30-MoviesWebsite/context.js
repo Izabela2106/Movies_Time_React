@@ -47,7 +47,7 @@ const AppProvider = ({
     }
     const openModal = () => {
         isModalOpen(true);
-        console.log("opne")
+        
 
     }
     const closeModal = () => {
