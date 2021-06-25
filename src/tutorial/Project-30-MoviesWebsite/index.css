@@ -113,10 +113,12 @@ nav {
     left: 0;
     opacity: 95%;
     overflow: scroll;
+     transform: translate(0);
 }
 
 .show-sidebar {
     transform: translate(0);
+    visibility: visible;
 }
 
 .hidden {

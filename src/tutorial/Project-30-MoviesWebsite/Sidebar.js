@@ -37,7 +37,7 @@ const Sidebar=()=>{
     
     
     
-    return <aside className={`${sidebar ? "sidebar show-sidebar" :"sidebar"}`}>
+    return <aside className={`${sidebar ? "sidebar " :"sidebar hidden"}`}>
     <div className="sidebarHeader">
 <img src={logo} alt="logo" className="logo"></img>
 <div className="urlName">
