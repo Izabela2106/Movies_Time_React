@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from 'react'
 
 const Movies=()=>{
     
-    const {movies,loading,url}= useGlobalContext();
+    const {movies,loading,url,dataToFetch}= useGlobalContext();
     
    
     
@@ -15,7 +15,7 @@ const Movies=()=>{
     },[url]);
     
   
-    
+  
         return <div className={`${loading ?"hidden movies" : "movies"}`}>
                     { 
                     movies.map(movie=>{

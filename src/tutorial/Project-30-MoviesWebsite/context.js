@@ -8,7 +8,7 @@ import React from 'react';
 
 
 
-let link = "https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=50";
+
 
 const AppContext = React.createContext();
 
@@ -17,25 +17,24 @@ const AppProvider = ({
 }) => {
     const [sidebar, isSidebarOpen] = useState(false);
     const [modal, isModalOpen] = useState(false);
-    const [movies, setMovies] = useState(["xd"]);
-    const [loading, isLoading] = useState(true);
+    const [movies, setMovies] = useState([]);
+   
     const [genresList, isGenresShown] = useState(false);
     const [orderBy, isOrderByShown] = useState(false);
     const [input, setInput] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+   
+     const [loading, isLoading] = useState(true);
+    const [scroll,setScroll]=useState(false);
 
-
-    const [url, setUrl] = useState(link);
-
-    const [dataToFetch, setDatatoFetch] = useState({
-        category: "Popular",
-        sortBy: "rating",
-        orderBy: "desc",
-    
-    });
-
-
+    const [url, setUrl] = useState();
+   const [category,setCategory]=useState('comedy');
+    const [sortBy,setSortBy]=useState("rating");
+    const [orderByQuery,setOrderByQuery]=useState('desc');
+    const [page,setPage]=useState(1);
+    const searchForm=useRef(input.value);
     const [modalContent, setModalContent] = useState({});
+    let scrollLabel=1;
 
     const openSidebar = () => {
         isSidebarOpen(true);
@@ -68,37 +67,107 @@ const AppProvider = ({
     const toggleInput = () => {
         setInput(!input);
     }
-
-    const fetchData = async (url) => {
+    
+    
+    
+    const defineUrl=()=>{
         isLoading(true);
-        const response = await fetch(url);
-        const newMovies = await response.json();
-        if (newMovies.data.movies) {
-            setMovies(newMovies.data.movies);
-         
-            isLoading(false);
-        }
         
+        if(searchQuery){
+        setUrl(`https://yts.mx/api/v2/list_movies.json?limit=50&query_term=${searchQuery}&sort_by=${sortBy}&order_by=${orderByQuery}&page=${page}`);
+        }
+        else{
+        setUrl(`https://yts.mx/api/v2/list_movies.json?limit=50&genre=${category}&sort_by=${sortBy}&order_by=${orderByQuery}&page=${page}`);
+        }
+   
+        
+    }
+    
+    
+    useEffect(()=>{
+        defineUrl();
+    },[page,category,orderByQuery,sortBy,searchQuery])
+
+    const fetchData = async () => {
+     
+      isLoading(true);
+
+       const response= await fetch(url);
+        const newMovies = await response.json();
+       
+     
+        
+        setMovies((oldMovies)=>{
+            if(page === 1 && newMovies.data.movies ){
+                return newMovies.data.movies
+            }
+          
+            else if( newMovies.data.movies){
+               
+                return [...oldMovies,...newMovies.data.movies];
+              
+            }
+            else{
+                return [];
+            }
+        })
         
 
+       isLoading(false);
+       
+       
         
 
     }
-    const searchForm=useRef("");
+    
     
     useEffect(() => {
-        fetchData(url);
-
-    }, [url]);
-
-    useEffect(() => {
-        setUrl(`https://yts.mx/api/v2/list_movies.json?limit=50&genre=${dataToFetch.category}&sort_by=${dataToFetch.sortBy}&order_by=${dataToFetch.orderBy}`)
-    }, [dataToFetch])
-
-    useEffect(() => {
-        setUrl(`https://yts.mx/api/v2/list_movies.json?limit=50&query_term=${searchQuery}`)
        
-    }, [searchQuery])
+        fetchData();
+        
+       
+    }, [url]);
+    
+    let loadingRef=useRef(loading);
+    
+    useEffect(()=>{
+        if(!loading){
+            loadingRef.current=true;
+        }
+        else{
+            loadingRef.current=false;
+        }
+    },[loading])
+    
+    
+    
+ 
+    
+    useEffect(()=>{
+        const event=window.addEventListener('scroll',()=>{
+          
+           
+            if(loadingRef && (window.innerHeight+window.scrollY) >=document.body.scrollHeight-50 && scrollLabel){
+                scrollLabel=0;
+                loadingRef.current=false;
+              
+                setPage((oldPage)=>{
+                    return oldPage+1;
+                    
+                });
+                setTimeout(()=>{
+                    scrollLabel=1;
+                },500)
+                
+            }
+            
+        })
+        
+        return ()=> window.removeEventListener('scroll',event);
+        // eslint-disable-next-line
+    },[])
+
+   
 
 
 
@@ -125,8 +194,7 @@ const AppProvider = ({
                 isGenresShown,
                 toggleGenres,
                 toggleOrderBy,
-                dataToFetch,
-                setDatatoFetch,
+               toggleSidebar,
                 orderBy,
                 isOrderByShown,
                 url,
@@ -136,7 +204,14 @@ const AppProvider = ({
                 toggleInput,
                 searchQuery,
                 setSearchQuery,
-                searchForm
+                searchForm,
+                page,
+                setPage,
+        orderByQuery,
+        setOrderByQuery,
+        sortBy,setSortBy,
+               defineUrl,
+        setCategory
             }
         } > {
             children

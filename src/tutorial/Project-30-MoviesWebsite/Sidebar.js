@@ -6,14 +6,21 @@ import { AiFillTwitterCircle,AiFillInstagram,AiFillFacebook } from 'react-icons/
 
 
 const Sidebar=()=>{
-    const {sidebar,dataToFetch,setDatatoFetch,toggleSidebar,url,setUrl,toggleOrderBy,isOrderByShown,isGenresShown,genresList,orderBy,toggleGenres, setSearchQuery,searchForm}=useGlobalContext();
+    const {sidebar,toggleSidebar,url,setUrl,toggleOrderBy,isOrderByShown,isGenresShown,genresList,orderBy,toggleGenres, setSearchQuery,searchForm,setPage,setCategory,setOrderByQuery,setSortBy}=useGlobalContext();
     
     const handleGenreClick=(name)=>{
+       
+        setPage(1);
+        
         if(name==="Popular"){
             setUrl("https://yts.mx/api/v2/list_movies.json?limit=50&order_by=asc");
             return;
         }
- setDatatoFetch({...dataToFetch,category:name})
+        setCategory(name);
+         setSortBy('rating');
+        
+        
+ 
     toggleSidebar();
          setSearchQuery("");
          searchForm.current.value="";
@@ -21,12 +28,18 @@ const Sidebar=()=>{
     }
     
      const handleSortByClick=(name)=>{
+                 setPage(1);
+
+       console.log(name);
          if(name ==="year" || name==="rating"){
- setDatatoFetch({...dataToFetch,sortBy:name,orderBy:"desc"})
+              setOrderByQuery('desc') ; 
+              console.log('query')
          }
          else{
-             setDatatoFetch({...dataToFetch,sortBy:name,orderBy:"asc"})
+            setOrderByQuery('asc') ; 
+              console.log('query2')
          }
+         setSortBy(name);
     toggleSidebar();
        
          setSearchQuery("");
