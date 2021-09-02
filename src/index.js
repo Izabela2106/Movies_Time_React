@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import "./tutorial/Project-30-MoviesWebsite/index.css";
-import App from "./tutorial/Project-30-MoviesWebsite/App.js";
-import {AppProvider} from "./tutorial/Project-30-MoviesWebsite/context.js"
+import "./index.css";
+import App from "./App.js";
+import {AppProvider} from "./context.js"
 
 
 ReactDOM.render( 
