@@ -12,9 +12,7 @@ import React from 'react';
 
 const AppContext = React.createContext();
 
-const AppProvider = ({
-    children
-}) => {
+const AppProvider = ({ children}) => {
     const [sidebar, isSidebarOpen] = useState(false);
     const [modal, isModalOpen] = useState(false);
     const [movies, setMovies] = useState([]);
@@ -25,7 +23,7 @@ const AppProvider = ({
     const [searchQuery, setSearchQuery] = useState('');
    
      const [loading, isLoading] = useState(true);
-    const [scroll,setScroll]=useState(false);
+    const [scroll,setScroll]=useState(true);
 
     const [url, setUrl] = useState();
    const [category,setCategory]=useState('comedy');
@@ -34,7 +32,6 @@ const AppProvider = ({
     const [page,setPage]=useState(1);
     const searchForm=useRef(input.value);
     const [modalContent, setModalContent] = useState({});
-    let scrollLabel=1;
 
     const openSidebar = () => {
         isSidebarOpen(true);
@@ -145,10 +142,10 @@ const AppProvider = ({
     
     useEffect(()=>{
         const event=window.addEventListener('scroll',()=>{
-          
-           
-            if(loadingRef && (window.innerHeight+window.scrollY) >=document.body.scrollHeight-50 && scrollLabel){
-                scrollLabel=0;
+        
+            if(loadingRef && window.innerHeight+window.scrollY >= document.documentElement.scrollHeight-50 && scroll){
+                               
+                setScroll(false);
                 loadingRef.current=false;
               
                 setPage((oldPage)=>{
@@ -156,7 +153,7 @@ const AppProvider = ({
                     
                 });
                 setTimeout(()=>{
-                    scrollLabel=1;
+                    setScroll(true);
                 },500)
                 
             }
@@ -173,8 +170,8 @@ const AppProvider = ({
 
 
 
-    return <AppContext.Provider value = {
-            {
+    return (
+    <AppContext.Provider value = {{
                 isModalOpen,
                 isSidebarOpen,
                 openSidebar,
@@ -194,7 +191,6 @@ const AppProvider = ({
                 isGenresShown,
                 toggleGenres,
                 toggleOrderBy,
-               toggleSidebar,
                 orderBy,
                 isOrderByShown,
                 url,
@@ -212,11 +208,10 @@ const AppProvider = ({
         sortBy,setSortBy,
                defineUrl,
         setCategory
-            }
-        } > {
-            children
-        } <
-        /AppContext.Provider>
+            }} > {children} 
+       </AppContext.Provider>
+       )
+       
 }
 
 export const useGlobalContext = () => {

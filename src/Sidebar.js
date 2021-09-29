@@ -30,10 +30,8 @@ const Sidebar=()=>{
      const handleSortByClick=(name)=>{
                  setPage(1);
 
-       console.log(name);
          if(name ==="year" || name==="rating"){
               setOrderByQuery('desc') ; 
-              console.log('query')
          }
          else{
             setOrderByQuery('asc') ; 
