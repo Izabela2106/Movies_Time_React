@@ -1,30 +1,19 @@
-import Movie from "./Movie"
-import {fetchData} from './fetchData';
-import {useGlobalContext} from "./context.js"
-import { useState, useRef, useEffect } from 'react'
+import React, { useEffect } from 'react';
+import Movie from './Movie';
+import { useGlobalContext } from './context';
 
+const Movies = () => {
+  const { movies, loading, url } = useGlobalContext();
 
-const Movies=()=>{
-    
-    const {movies,loading,url,dataToFetch}= useGlobalContext();
-    
-   
-    
-    useEffect(()=>{
-      
-    },[url]);
-    
-  
-  
-        return <div className={`${loading ?"hidden movies" : "movies"}`}>
-                    { 
-                    movies.map(movie=>{
-            return <Movie movie={movie} key={movie.id}>
-            </Movie>
-            })
-                }
-                    </div>
-            }
+  useEffect(() => {}, [url]);
 
+  return (
+    <div className={`${loading ? 'hidden movies' : 'movies'}`}>
+      {movies.map((movie) => (
+        <Movie movie={movie} key={movie.id} />
+      ))}
+    </div>
+  );
+};
 
-            export default Movies
+export default Movies;

@@ -1,29 +1,25 @@
-import React from 'react'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
-import Movies from './Movies'
-import Modal from "./Modal"
-import {useGlobalContext} from "./context.js"
+import React from 'react';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
+import Movies from './Movies';
+import Modal from './Modal';
+import { useGlobalContext } from './context';
 
 function App() {
-    
-    const {modalContent}=useGlobalContext();
-    
+  const { modalContent } = useGlobalContext();
+
   return (
-  <>
+    <>
       <div>
-      <Navbar />
+        <Navbar />
       </div>
       <div className="page-center">
-      <Sidebar />
-      <Movies />
-      <Modal modalContent={modalContent}/>
+        <Sidebar />
+        <Movies />
+        <Modal modalContent={modalContent} />
       </div>
-      
-    
-      
-   </>
-  )
+    </>
+  );
 }
 
-export default App
+export default App;
